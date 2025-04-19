@@ -1,3 +1,5 @@
+using Azure;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Voeg deze services toe:
@@ -8,6 +10,8 @@ builder.Services.AddSession(options =>
     options.Cookie.HttpOnly = true;
     options.Cookie.IsEssential = true;
 });
+
+
 
 builder.Services.AddRazorPages();
 

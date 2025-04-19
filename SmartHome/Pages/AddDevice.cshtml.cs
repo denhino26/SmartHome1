@@ -13,17 +13,26 @@ public class AddDeviceModel : PageModel
         _configuration = configuration;
     }
 
+
     [BindProperty]
     public Device Device { get; set; }
 
     public IActionResult OnPost()
     {
+
+        var userName = HttpContext.Session.GetString("SelectedUserId");
+
+        if (string.IsNullOrWhiteSpace(Device?.Name))
+        {
+            ModelState.AddModelError("Device.Name", "Naam is verplicht.");
+            return Page();
+        }
         string connectionString = "Data Source=mssqlstud.fhict.local;Initial Catalog=dbi563236;User ID=dbi563236;Password=Zondag23!;Encrypt=False";
 
         using (SqlConnection conn = new SqlConnection(connectionString))
         {
             conn.Open();
-            string query = "INSERT INTO Devices (Name, Type, Status, UserId) VALUES (@Name, @Type, @Status, @UserId)";
+            string query = "INSERT INTO Devices (Name, Type, Status, LoginName) VALUES (@Name, @Type, @Status, @LoginName)";
 
             using (SqlCommand cmd = new SqlCommand(query, conn))
             {
@@ -31,7 +40,9 @@ public class AddDeviceModel : PageModel
                 cmd.Parameters.AddWithValue("@Name", Device.Name);
                 cmd.Parameters.AddWithValue("@Type", Device.Type);
                 cmd.Parameters.AddWithValue("@Status", "uit");
-                cmd.Parameters.AddWithValue("@UserId",1); 
+                cmd.Parameters.AddWithValue("@LoginName", 1);
+
+
 
 
                 cmd.ExecuteNonQuery();

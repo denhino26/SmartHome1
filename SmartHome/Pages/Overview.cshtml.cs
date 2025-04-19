@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Data.SqlClient;
+using SmartHomeApp.Models;
 using System.Collections.Generic;
 
 
@@ -8,7 +9,7 @@ public class IndexModel : PageModel
 {
 
 
-    public List<Device> Devices { get; set; } = new();
+    public List<SmartHomeApp.Models.Device> Devices { get; set; } = new();
 
     private readonly string connectionString = "Data Source=mssqlstud.fhict.local;Initial Catalog=dbi563236;User ID=dbi563236;Password=Zondag23!;Encrypt=False";
     public string SelectedUserName { get; set; }
@@ -27,6 +28,7 @@ public class IndexModel : PageModel
     {
         int deviceId = int.Parse(Request.Form["deviceId"]);
         string action = Request.Form["action"];
+
 
         if (action == "toggle")
         {
@@ -90,12 +92,4 @@ public class IndexModel : PageModel
     
 
 
-}
-
-public class Device
-{
-    public int Id { get; set; }
-    public string Name { get; set; }
-    public string Type { get; set; }
-    public string Status { get; set; }
 }

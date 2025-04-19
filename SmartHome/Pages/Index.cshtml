@@ -13,13 +13,13 @@
                     <h2>Bestaande Gebruiker</h2>
                     <form method="post" class="user-form">
                         <div class="mb-3">
-                            <label asp-for="SelectedUserId" class="form-label">Kies een gebruiker:</label>
-                            <select asp-for="SelectedUserId"
-                                    asp-items="@(new SelectList(Model.Users, "UserId", "Name"))"
+                            <label asp-for="Name" class="form-label">Kies een gebruiker:</label>
+                            <select asp-for="Name"
+                                    asp-items="@(new SelectList(Model.Users, "Name", "Name"))"
                                     class="form-select">
-
                                 <option value="">-- Selecteer gebruiker --</option>
                             </select>
+
                         </div>
                         <button type="submit" class="btn btn-primary">Doorgaan</button>
                     </form>

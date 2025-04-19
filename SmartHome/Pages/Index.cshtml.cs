@@ -7,17 +7,24 @@ using System.ComponentModel.DataAnnotations;
 
 namespace SmartHomeApp.Pages
 {
+
+
     public class SelectUserModel : PageModel
     {
+
+
         public List<User> Users { get; set; } = new List<User>();
+
+
 
         [BindProperty]
         [Required(ErrorMessage = "Selecteer een gebruiker.")]
-        public int SelectedUserId { get; set; }
+        public string Name { get; set; }
 
 
         [BindProperty]
         public string NewUserName { get; set; }
+        public string NameUser { get; private set; }
 
         private readonly string connectionString = "Data Source=mssqlstud.fhict.local;Initial Catalog=dbi563236;User ID=dbi563236;Password=Zondag23!;Encrypt=False";
 
@@ -26,16 +33,27 @@ namespace SmartHomeApp.Pages
             LoadUsers();
         }
 
+
         public IActionResult OnPost()
         {
-           
-                TempData["SelectedUser"] = SelectedUserId;
-           
+            LoadUsers(); 
 
-            ModelState.AddModelError("", "Selecteer eerst een gebruiker.");
-            LoadUsers(); // Herlaad voor formulier opnieuw
-            return RedirectToPage("/Overview");
+            if (!string.IsNullOrWhiteSpace(Name))
+            {
+                var selectedUser = Users.FirstOrDefault(u => u.Name == Name);
+            
+                if (selectedUser != null)
+                {
+                    TempData["Name"] = selectedUser.Name;
+                    return RedirectToPage("/Overview"); // Stuur door naar Index
+                }
+            }
+
+            ModelState.AddModelError("", "Selecteer eerst een geldige gebruikers.");
+            return Page();
         }
+
+
 
         public IActionResult OnPostAddUser()
         {

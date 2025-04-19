@@ -7,7 +7,7 @@
         public string Type { get; set; }
         public string Status { get; set; } = "off";
 
-        public string UserId { get; set; }
+        public User User { get; set; }
 
         public void TurnOn() => Status = "on";
         public void TurnOff() => Status = "off";

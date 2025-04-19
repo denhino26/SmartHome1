@@ -2,8 +2,12 @@
 @model IndexModel
 @using SmartHomeApp.Models
 @{
-    Layout = "_Layout";
+    var naam = TempData["Name"] as string;
 }
+
+
+
+    
 
 
 
@@ -11,7 +15,8 @@
 
 <div class="center-wrapper">
     <div class="device-container">
-        <h2 class="device-title">Welkom @Model.SelectedUserName</h2>
+        <h2 class="device-title">Welkom, @naam!</h2>
+
         <h6 class="device-title">Apparaten</h6>
 
         <div class="table-wrapper">
