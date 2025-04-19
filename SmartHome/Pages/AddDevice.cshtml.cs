@@ -17,10 +17,15 @@ public class AddDeviceModel : PageModel
     [BindProperty]
     public Device Device { get; set; }
 
+
+    public string Naam { get; set; }
+
+
     public IActionResult OnPost()
     {
 
         var userName = HttpContext.Session.GetString("SelectedUserId");
+  
 
         if (string.IsNullOrWhiteSpace(Device?.Name))
         {
@@ -40,7 +45,7 @@ public class AddDeviceModel : PageModel
                 cmd.Parameters.AddWithValue("@Name", Device.Name);
                 cmd.Parameters.AddWithValue("@Type", Device.Type);
                 cmd.Parameters.AddWithValue("@Status", "uit");
-                cmd.Parameters.AddWithValue("@LoginName", 1);
+                cmd.Parameters.AddWithValue("@LoginName", userName ?? "onbekend");
 
 
 

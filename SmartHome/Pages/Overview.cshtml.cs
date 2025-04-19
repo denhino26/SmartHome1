@@ -10,24 +10,28 @@ public class IndexModel : PageModel
 
 
     public List<SmartHomeApp.Models.Device> Devices { get; set; } = new();
+    public string UserName { get; set; }
 
     private readonly string connectionString = "Data Source=mssqlstud.fhict.local;Initial Catalog=dbi563236;User ID=dbi563236;Password=Zondag23!;Encrypt=False";
-    public string SelectedUserName { get; set; }
+    
     public void OnGet()
     {
         LoadDevices();
 
-            SelectedUserName = "SelectedUser";
-        
-     
+        var user = new SmartHomeApp.Models.User();
+        user.SelectedUserName = "SelectedUser";
+
+        UserName = HttpContext.Session.GetString("SelectedUserId");
+
     }
 
-    
+
 
     public IActionResult OnPost()
     {
         int deviceId = int.Parse(Request.Form["deviceId"]);
         string action = Request.Form["action"];
+
 
 
         if (action == "toggle")

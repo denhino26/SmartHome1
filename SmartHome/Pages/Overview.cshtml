@@ -1,21 +1,12 @@
 ﻿@page
 @model IndexModel
 @using SmartHomeApp.Models
-@{
-    var naam = TempData["Name"] as string;
-}
-
-
-
-    
-
-
 
 
 
 <div class="center-wrapper">
     <div class="device-container">
-        <h2 class="device-title">Welkom, @naam!</h2>
+        <h2 class="device-title">Welkom, @Model.UserName!</h2>
 
         <h6 class="device-title">Apparaten</h6>
 
@@ -63,6 +54,10 @@
 
         <div class="add-device-link">
             <a asp-page="/AddDevice" class="btn-add">+ Nieuw apparaat toevoegen</a>
+        </div>
+
+        <div class="add-device-link">
+            <a asp-page="/Index" class="btn-add">+ Terug naam inlogpagina</a>
         </div>
     </div>
 </div>

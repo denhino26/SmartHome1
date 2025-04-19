@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Data.SqlClient;
@@ -24,7 +25,10 @@ namespace SmartHomeApp.Pages
 
         [BindProperty]
         public string NewUserName { get; set; }
-        public string NameUser { get; private set; }
+
+     
+
+
 
         private readonly string connectionString = "Data Source=mssqlstud.fhict.local;Initial Catalog=dbi563236;User ID=dbi563236;Password=Zondag23!;Encrypt=False";
 
@@ -36,18 +40,32 @@ namespace SmartHomeApp.Pages
 
         public IActionResult OnPost()
         {
-            LoadUsers(); 
+            LoadUsers();
+
+            //if (!string.IsNullOrWhiteSpace(Name))
+            //{
+            //    var selectedUser = Users.FirstOrDefault(u => u.Name == Name);
+
+
+            //    if (selectedUser != null)
+            //    {
+            //        TempData["Name"] = selectedUser.Name;
+            //        return RedirectToPage("/Overview");
+            //    }
+            //}
+
 
             if (!string.IsNullOrWhiteSpace(Name))
             {
                 var selectedUser = Users.FirstOrDefault(u => u.Name == Name);
-            
                 if (selectedUser != null)
                 {
-                    TempData["Name"] = selectedUser.Name;
-                    return RedirectToPage("/Overview"); // Stuur door naar Index
+                    // Correct: Sla de gebruikersnaam op in de sessie
+                    HttpContext.Session.SetString("SelectedUserId", selectedUser.Name);
+                    return RedirectToPage("/Overview");
                 }
             }
+
 
             ModelState.AddModelError("", "Selecteer eerst een geldige gebruikers.");
             return Page();
