@@ -2,18 +2,25 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Data.SqlClient;
 using SmartHomeApp.Models;
-using System.Collections.Generic;
 
 
 public class IndexModel : PageModel
 {
 
+    private readonly IConfiguration _configuration;
+    private readonly string _connectionString;
 
     public List<SmartHomeApp.Models.Device> Devices { get; set; } = new();
     public string UserName { get; set; }
 
-    private readonly string connectionString = "Data Source=mssqlstud.fhict.local;Initial Catalog=dbi563236;User ID=dbi563236;Password=Zondag23!;Encrypt=False";
-    
+
+    public IndexModel(IConfiguration configuration)
+    {
+        _configuration = configuration;
+        _connectionString = _configuration.GetConnectionString("DefaultConnection");
+    }
+
+
     public void OnGet()
     {
         LoadDevices();
@@ -46,7 +53,7 @@ public class IndexModel : PageModel
     {
         Devices.Clear();
 
-        using SqlConnection conn = new SqlConnection(connectionString);
+        using SqlConnection conn = new SqlConnection(_connectionString);
         conn.Open();
 
         string query = "SELECT DeviceId, Name, Type, Status FROM Devices";
@@ -67,7 +74,7 @@ public class IndexModel : PageModel
 
     private void ToggleDeviceStatus(int deviceId)
     {
-        using SqlConnection conn = new SqlConnection(connectionString);
+        using SqlConnection conn = new SqlConnection(_connectionString);
         conn.Open();
 
         string getStatusQuery = "SELECT Status FROM Devices WHERE DeviceId = @Id";

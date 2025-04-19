@@ -1,4 +1,6 @@
 var builder = WebApplication.CreateBuilder(args);
+// Program.cs
+
 
 // Add services to the container
 builder.Services.AddDistributedMemoryCache(); // Voor sessie-opslag
@@ -29,3 +31,4 @@ app.UseSession();  // Belangrijk: moet na UseRouting() en voor MapRazorPages()
 app.MapRazorPages();
 
 app.Run();
+

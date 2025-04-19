@@ -12,7 +12,8 @@ namespace SmartHomeApp.Pages
 
     public class SelectUserModel : PageModel
     {
-
+        private readonly IConfiguration _configuration;
+        private readonly string _connectionString;
 
         public List<User> Users { get; set; } = new List<User>();
 
@@ -26,11 +27,16 @@ namespace SmartHomeApp.Pages
         [BindProperty]
         public string NewUserName { get; set; }
 
-     
 
 
+        public SelectUserModel(IConfiguration configuration)
+        {
+            _configuration = configuration;
+            _connectionString = _configuration.GetConnectionString("DefaultConnection");
+             
+        }
 
-        private readonly string connectionString = "Data Source=mssqlstud.fhict.local;Initial Catalog=dbi563236;User ID=dbi563236;Password=Zondag23!;Encrypt=False";
+
 
         public void OnGet()
         {
@@ -41,18 +47,6 @@ namespace SmartHomeApp.Pages
         public IActionResult OnPost()
         {
             LoadUsers();
-
-            //if (!string.IsNullOrWhiteSpace(Name))
-            //{
-            //    var selectedUser = Users.FirstOrDefault(u => u.Name == Name);
-
-
-            //    if (selectedUser != null)
-            //    {
-            //        TempData["Name"] = selectedUser.Name;
-            //        return RedirectToPage("/Overview");
-            //    }
-            //}
 
 
             if (!string.IsNullOrWhiteSpace(Name))
@@ -77,7 +71,7 @@ namespace SmartHomeApp.Pages
         {
             if (!string.IsNullOrWhiteSpace(NewUserName))
             {
-                using (SqlConnection conn = new SqlConnection(connectionString))
+                using (SqlConnection conn = new SqlConnection(_connectionString))
                 {
                     conn.Open();
                     var cmd = new SqlCommand("INSERT INTO Users (Name) VALUES (@name)", conn);
@@ -93,7 +87,7 @@ namespace SmartHomeApp.Pages
         private void LoadUsers()
         {
             Users.Clear();
-            using (SqlConnection conn = new SqlConnection(connectionString))
+            using (SqlConnection conn = new SqlConnection(_connectionString))
             {
                 conn.Open();
                 var command = new SqlCommand("SELECT UserId,Name FROM Users", conn);

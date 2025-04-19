@@ -6,6 +6,7 @@ using Microsoft.Data.SqlClient;
 
 public class AddDeviceModel : PageModel
 {
+    
     private readonly IConfiguration _configuration;
 
     public AddDeviceModel(IConfiguration configuration)
@@ -18,13 +19,13 @@ public class AddDeviceModel : PageModel
     public Device Device { get; set; }
 
 
-    public string Naam { get; set; }
+    public string userName { get; set; }
 
 
     public IActionResult OnPost()
     {
 
-        var userName = HttpContext.Session.GetString("SelectedUserId");
+         userName = HttpContext.Session.GetString("SelectedUserId");
   
 
         if (string.IsNullOrWhiteSpace(Device?.Name))
@@ -32,7 +33,7 @@ public class AddDeviceModel : PageModel
             ModelState.AddModelError("Device.Name", "Naam is verplicht.");
             return Page();
         }
-        string connectionString = "Data Source=mssqlstud.fhict.local;Initial Catalog=dbi563236;User ID=dbi563236;Password=Zondag23!;Encrypt=False";
+        string connectionString = _configuration.GetConnectionString("DefaultConnection");
 
         using (SqlConnection conn = new SqlConnection(connectionString))
         {
