@@ -60,6 +60,24 @@
         <div class="add-device-link mt-4">
             <a asp-page="/Index" class="btn btn-primary">Terug naam inlogpagina</a>
         </div>
+        <form method="post" asp-page-handler="DeleteDevice" class="mb-4">
+            <div class="form-group">
+                <label for="SelectedDeviceId">Selecteer apparaat om te verwijderen:</label>
+                <select asp-for="SelectedDeviceId" class="form-control">
+                  
+                    @foreach (var device in Model.Devices)
+                    {
+                        <option value="@device.Id">@device.Name (@device.Type)</option>
+                    }
+                </select>
+            </div>
+            <button type="submit" class="btn btn-danger">Verwijderen</button>
+        </form>
+
+
+
+       
+
     </div>
 </div>
 

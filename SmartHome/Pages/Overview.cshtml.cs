@@ -13,6 +13,8 @@ public class IndexModel : PageModel
     public List<SmartHomeApp.Models.Device> Devices { get; set; } = new();
     public string UserName { get; set; }
 
+    [BindProperty]
+    public int SelectedDeviceId { get; set; }
 
     public IndexModel(IConfiguration configuration)
     {
@@ -36,14 +38,20 @@ public class IndexModel : PageModel
 
     public IActionResult OnPost()
     {
-        int deviceId = int.Parse(Request.Form["deviceId"]);
-        string action = Request.Form["action"];
-
-
-
-        if (action == "toggle")
+        if (Request.Form.ContainsKey("deviceId"))
         {
-            ToggleDeviceStatus(deviceId);
+            int deviceId = int.Parse(Request.Form["deviceId"]);
+            string action = Request.Form["action"];
+
+
+            if (action == "toggle")
+            {
+                ToggleDeviceStatus(deviceId);
+            }
+        }
+        if (SelectedDeviceId > 0)
+        {
+            DeleteDevice(SelectedDeviceId);
         }
 
         return RedirectToPage();
@@ -97,10 +105,23 @@ public class IndexModel : PageModel
     }
 
 
+    private void DeleteDevice(int deviceId)
+    {
+        using SqlConnection conn = new SqlConnection(_connectionString);
+        conn.Open();
+
+        string deleteQuery = "DELETE FROM Devices WHERE DeviceId = @Id";
+
+        using (SqlCommand cmd = new SqlCommand(deleteQuery, conn))
+        {
+            cmd.Parameters.AddWithValue("@Id", deviceId);
+            cmd.ExecuteNonQuery();
+        }
+    }
 
 
-   
-    
+
+
 
 
 }
