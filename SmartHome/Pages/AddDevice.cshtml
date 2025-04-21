@@ -18,10 +18,14 @@
             <div class="form-group">
                 <label asp-for="Device.Type" class="form-label">Type lamp:</label>
                 <select asp-for="Device.Type" class="form-select">
-                    <option value="">-- Selecteer type --</option>
+                    <option value="" disabled selected>Selecteer</option>
+
                     <option value="LED">LED</option>
                     <option value="Gloeilampen">Gloeilampen</option>
                     <option value="Slimme lamp">Slimme lamp</option>
+                        <option value="Verlichting">Verlichting</option>
+    <option value="Thermostaat">Thermostaat</option>
+    <option value="Beveiliging">Beveiliging</option>
                 </select>
             </div>
 

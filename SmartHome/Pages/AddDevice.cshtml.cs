@@ -22,15 +22,16 @@ public class AddDeviceModel : PageModel
     public string userName { get; set; }
 
 
+
     public IActionResult OnPost()
     {
 
          userName = HttpContext.Session.GetString("SelectedUserId");
   
 
-        if (string.IsNullOrWhiteSpace(Device?.Name))
+        if (string.IsNullOrWhiteSpace(Device?.Name )||( string.IsNullOrWhiteSpace(Device?.Type)))
         {
-            ModelState.AddModelError("Device.Name", "Naam is verplicht.");
+        
             return Page();
         }
         string connectionString = _configuration.GetConnectionString("DefaultConnection");

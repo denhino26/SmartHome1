@@ -7,7 +7,10 @@
         public string Type { get; set; }
         public string Status { get; set; } = "off";
 
-        public User userName { get; set; }
+        public string userName { get; set; }
+
+        public DateTime CreatedAt { get; set; }
+
 
         public void TurnOn() => Status = "on";
         public void TurnOff() => Status = "off";

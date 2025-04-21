@@ -1,0 +1,74 @@
+﻿@page
+@model SmartHome.Pages.OverviewHistoryModel
+@{
+}
+
+<link rel="stylesheet" href="~/css/site.css" />
+
+<div class="center-wrapper">
+    <div class="device-container">
+        <h2 class="device-title">Apparaten history</h2>
+
+   
+
+        <div class="table-wrapper">
+            <table class="device-table">
+                <thead>
+                    <tr>
+						<th>ID</th>
+                        <th>Naam</th>
+                        <th>Type</th>
+                        <th>Status</th>
+						<th>Gebruiker</th>
+						<th>Aangemaakt op</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model.Devices != null && Model.Devices.Any())
+                    {
+                        foreach (var device in Model.Devices)
+                        {
+                            <tr>
+                                <td>@device.Id</td>
+                                <td>@device.Name</td>
+                                <td>@device.Type</td>
+                                <td>@device.Status</td>
+                                <td>@device.userName</td>
+                                <td>@device.CreatedAt</td>
+                          
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="4" class="no-devices">Er zijn nog geen apparaten toegevoegd.</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+
+        <form method="post" asp-page-handler="DeleteDevice" class="mb-4">
+            <div class="form-group">
+                <label for="SelectedDeviceId">Selecteer apparaat om te verwijderen:</label>
+                <select asp-for="SelectedDeviceId" class="form-control">
+
+                    @foreach (var device in Model.Devices)
+                    {
+                        <option value="@device.Id">@device.Name.PadRight(20) @device.userName.PadRight(20) @device.CreatedAt (@device.Type)</option>
+                    }
+                </select>
+            </div>
+            <button type="submit" class="btn btn-danger">Verwijderen</button>
+        </form>
+
+  
+        <div class="add-device-link mt-4">
+            <a asp-page="/Overview" class="btn btn-primary">Terug naar overzicht</a>
+        </div>
+
+
+
+    </div>
+</div>
